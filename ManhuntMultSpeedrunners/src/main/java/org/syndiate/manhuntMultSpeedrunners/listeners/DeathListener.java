@@ -1,0 +1,102 @@
+package org.syndiate.manhuntMultSpeedrunners.listeners;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.syndiate.manhuntMultSpeedrunners.Main;
+
+public class DeathListener implements Listener {
+	
+	
+	
+	private void victoryMsg(ArrayList<Player> playerList) {
+		for (Player player : playerList) {
+			player.sendTitle(ChatColor.GOLD + "VICTORY!", "", 10, 100, 20);
+			player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
+		}
+	}
+	
+	private void defeatMsg(ArrayList<Player> playerList) {
+		for (Player player : playerList) {
+			player.sendTitle(ChatColor.RED + "GAME OVER", ChatColor.RED + "You lost.", 10, 100, 20);
+			player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, 1, 1);
+		}
+	}
+	
+	
+	
+	@EventHandler
+	public void onDeath(EntityDeathEvent deadEntity) {
+		if (!Main.manhuntEnded) {
+			
+			
+			Server server = deadEntity.getEntity().getServer();
+			
+			if (deadEntity.getEntityType() == EntityType.PLAYER) {
+				
+				
+				Player deadPlayer = (Player) deadEntity.getEntity();
+				Main.RunnerList.remove(deadPlayer);
+				Main.DeadRunnerList.add(deadPlayer);
+				
+				if (Main.RunnerList.size() == 0) {
+					
+					Main.manhuntEnded = true;
+					server.broadcastMessage(ChatColor.YELLOW + "The hunters have won the manhunt!");
+					
+					victoryMsg(Main.HunterList);
+					defeatMsg(Main.DeadRunnerList);
+					
+					Main.HunterList.clear();
+					Main.RunnerList.clear();
+					Main.DeadRunnerList.clear();
+					
+					
+				} else {
+					deadPlayer.setGameMode(GameMode.SPECTATOR);
+				}
+				
+				
+				
+			} else if (deadEntity.getEntityType() == EntityType.ENDER_DRAGON) {
+				
+				
+				Main.manhuntEnded = true;
+				server.broadcastMessage(ChatColor.YELLOW + "The speedrunner(s) have WON the manhunt!");
+				
+				defeatMsg(Main.HunterList);
+				
+				for (Player deadRunner : Main.DeadRunnerList) {
+					
+					Main.DeadRunnerList.remove(deadRunner);
+					Main.RunnerList.add(deadRunner);
+					deadRunner.teleport(new Location(Bukkit.getWorld("world"), 0, 0, 0));
+					deadRunner.setGameMode(GameMode.SURVIVAL);
+					
+				}
+				
+				victoryMsg(Main.RunnerList);
+				
+				
+				Main.HunterList.clear();
+				Main.RunnerList.clear();
+				Main.DeadRunnerList.clear();
+				
+				
+			}
+			
+			
+		}
+	}
+
+}
