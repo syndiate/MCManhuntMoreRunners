@@ -21,14 +21,14 @@ public class DeathListener implements Listener {
 	
 	private void victoryMsg(ArrayList<Player> playerList) {
 		for (Player player : playerList) {
-			player.sendTitle(ChatColor.GOLD + "VICTORY!", "", 10, 100, 20);
+			player.sendTitle(Main.VICTORY_COLOR + "VICTORY!", "", 10, 100, 20);
 			player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
 		}
 	}
 	
 	private void defeatMsg(ArrayList<Player> playerList) {
 		for (Player player : playerList) {
-			player.sendTitle(ChatColor.RED + "GAME OVER", ChatColor.RED + "You lost.", 10, 100, 20);
+			player.sendTitle(Main.DEFEAT_COLOR + "GAME OVER", ChatColor.WHITE + "You lost.", 10, 100, 20);
 			player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, 1, 1);
 		}
 	}
@@ -37,65 +37,61 @@ public class DeathListener implements Listener {
 	
 	@EventHandler
 	public void onDeath(EntityDeathEvent deadEntity) {
-		if (!Main.manhuntEnded) {
+		if (Main.manhuntEnded) return;
 			
+		Server server = deadEntity.getEntity().getServer();
 			
-			Server server = deadEntity.getEntity().getServer();
-			
-			if (deadEntity.getEntityType() == EntityType.PLAYER) {
+		if (deadEntity.getEntityType() == EntityType.PLAYER) {
 				
 				
-				Player deadPlayer = (Player) deadEntity.getEntity();
-				Main.RunnerList.remove(deadPlayer);
-				Main.DeadRunnerList.add(deadPlayer);
+			Player deadPlayer = (Player) deadEntity.getEntity();
+			Main.RunnerList.remove(deadPlayer);
+			Main.DeadRunnerList.add(deadPlayer);
 				
-				if (Main.RunnerList.size() == 0) {
+			if (Main.RunnerList.size() == 0) {
 					
-					Main.manhuntEnded = true;
-					server.broadcastMessage(ChatColor.YELLOW + "The hunters have won the manhunt!");
-					
-					victoryMsg(Main.HunterList);
-					defeatMsg(Main.DeadRunnerList);
-					
-					Main.HunterList.clear();
-					Main.RunnerList.clear();
-					Main.DeadRunnerList.clear();
-					
-					
-				} else {
-					deadPlayer.setGameMode(GameMode.SPECTATOR);
-				}
-				
-				
-				
-			} else if (deadEntity.getEntityType() == EntityType.ENDER_DRAGON) {
-				
-				
 				Main.manhuntEnded = true;
-				server.broadcastMessage(ChatColor.YELLOW + "The speedrunner(s) have WON the manhunt!");
-				
-				defeatMsg(Main.HunterList);
-				
-				for (Player deadRunner : Main.DeadRunnerList) {
+				server.broadcastMessage(Main.VICTORY_COLOR + "The hunters have won the manhunt!");
 					
-					Main.DeadRunnerList.remove(deadRunner);
-					Main.RunnerList.add(deadRunner);
-					deadRunner.teleport(new Location(Bukkit.getWorld("world"), 0, 0, 0));
-					deadRunner.setGameMode(GameMode.SURVIVAL);
+				victoryMsg(Main.HunterList);
+				defeatMsg(Main.DeadRunnerList);
 					
-				}
-				
-				victoryMsg(Main.RunnerList);
-				
-				
 				Main.HunterList.clear();
 				Main.RunnerList.clear();
 				Main.DeadRunnerList.clear();
-				
-				
+					
+					
+			} else {
+				deadPlayer.setGameMode(GameMode.SPECTATOR);
 			}
-			
-			
+				
+				
+				
+		} else if (deadEntity.getEntityType() == EntityType.ENDER_DRAGON) {
+				
+				
+			Main.manhuntEnded = true;
+			server.broadcastMessage(Main.VICTORY_COLOR + "The speedrunner(s) have WON the manhunt!");
+				
+			defeatMsg(Main.HunterList);
+				
+			for (Player deadRunner : Main.DeadRunnerList) {
+					
+				Main.DeadRunnerList.remove(deadRunner);
+				Main.RunnerList.add(deadRunner);
+				deadRunner.teleport(new Location(Bukkit.getWorld("world"), 0, 0, 0));
+				deadRunner.setGameMode(GameMode.SURVIVAL);
+					
+			}
+				
+			victoryMsg(Main.RunnerList);
+				
+				
+			Main.HunterList.clear();
+			Main.RunnerList.clear();
+			Main.DeadRunnerList.clear();
+				
+				
 		}
 	}
 

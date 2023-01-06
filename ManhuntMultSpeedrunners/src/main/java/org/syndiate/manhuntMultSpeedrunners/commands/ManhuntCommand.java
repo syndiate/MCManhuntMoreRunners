@@ -22,7 +22,7 @@ public class ManhuntCommand implements CommandExecutor {
 			case "start": {
 				
 				if (Main.HunterList.size() == 0 || Main.RunnerList.size() == 0) {
-					sender.sendMessage(ChatColor.RED + "You have not specified any hunters and/or runners. The manhunt will not begin.");
+					sender.sendMessage(Main.ERROR_COLOR + "You have not specified any hunters and/or runners. The manhunt will not begin.");
 					return false;
 				}
 				
@@ -40,7 +40,8 @@ public class ManhuntCommand implements CommandExecutor {
 				Main.manhuntEnded = true;
 				Main.RunnerList.clear();
 				Main.HunterList.clear();
-				server.broadcastMessage(ChatColor.RED + "The anhunt has ended!");
+				Main.runnerMenu.clear();
+				server.broadcastMessage(Main.VICTORY_COLOR + "The manhunt has ended!");
 				break;
 				
 			}
@@ -52,10 +53,11 @@ public class ManhuntCommand implements CommandExecutor {
 				sender.sendMessage("List of other commands:");
 				sender.sendMessage("/runner help");
 				sender.sendMessage("/hunter help");
+				sender.sendMessage("/track help");
 				break;
 			}
 			default:
-				sender.sendMessage(ChatColor.RED + "Invalid input. Type \"/manhunt help\" for more details.");
+				sender.sendMessage(Main.ERROR_COLOR + "Invalid input. Type \"/manhunt help\" for more details.");
 				
 		}
 		

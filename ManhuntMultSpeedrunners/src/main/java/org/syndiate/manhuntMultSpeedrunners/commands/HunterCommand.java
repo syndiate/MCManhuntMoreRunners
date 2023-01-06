@@ -2,7 +2,6 @@ package org.syndiate.manhuntMultSpeedrunners.commands;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +26,7 @@ public class HunterCommand implements CommandExecutor {
 		Player givenRunner = server.getPlayer(args[1]);
 		
 		if (givenRunner == null) {
-			sender.sendMessage(ChatColor.RED + "Could not find the player specified.");
+			sender.sendMessage(Main.ERROR_COLOR + "Could not find the player specified.");
 			return false;
 		}
 		
@@ -35,12 +34,12 @@ public class HunterCommand implements CommandExecutor {
 		
 			case "add": {
 				HunterList.add(givenRunner);
-				server.broadcastMessage(ChatColor.AQUA + givenRunner.getName() + " was added as a hunter!");
+				server.broadcastMessage(Main.ADDED_COLOR + givenRunner.getName() + " was added as a hunter!");
 				break;
 			}
 			case "remove": {
 				HunterList.remove(givenRunner);
-				server.broadcastMessage(ChatColor.DARK_RED + givenRunner.getName() + "was removed as a hunter.");
+				server.broadcastMessage(Main.REMOVED_COLOR + givenRunner.getName() + "was removed as a hunter.");
 				break;
 			}
 			case "help": {
@@ -51,7 +50,7 @@ public class HunterCommand implements CommandExecutor {
 				break;
 			}
 			default:
-				sender.sendMessage(ChatColor.RED + "Invalid input. Type \"/hunter help\" for more details.");
+				sender.sendMessage(Main.ERROR_COLOR + "Invalid input. Type \"/hunter help\" for more details.");
 		}
 		
 		return false;
