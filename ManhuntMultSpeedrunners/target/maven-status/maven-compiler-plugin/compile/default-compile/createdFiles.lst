@@ -1,3 +1,4 @@
+org\syndiate\manhuntMultSpeedrunners\listeners\MenuListener.class
 org\syndiate\manhuntMultSpeedrunners\commands\RunnerCommand.class
 org\syndiate\manhuntMultSpeedrunners\tabCompleters\ManhuntCommandCompleter.class
 org\syndiate\manhuntMultSpeedrunners\commands\ManhuntCommand.class
@@ -5,5 +6,7 @@ org\syndiate\manhuntMultSpeedrunners\commands\HunterCommand.class
 org\syndiate\manhuntMultSpeedrunners\listeners\DeathListener.class
 org\syndiate\manhuntMultSpeedrunners\listeners\RespawnListener.class
 org\syndiate\manhuntMultSpeedrunners\Main.class
+org\syndiate\manhuntMultSpeedrunners\commands\TrackCommand.class
 org\syndiate\manhuntMultSpeedrunners\listeners\CompassListener.class
 org\syndiate\manhuntMultSpeedrunners\tabCompleters\PlayerCommandCompleter.class
+org\syndiate\manhuntMultSpeedrunners\tabCompleters\TrackCommandCompleter.class

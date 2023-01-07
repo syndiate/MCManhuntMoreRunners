@@ -11,9 +11,7 @@ public class MenuListener implements Listener {
 	@EventHandler
 	public void onMenuClick(InventoryClickEvent e) {
 		
-		if (!(e.getView().getTitle().equalsIgnoreCase(Main.TITLE_COLOR + "Speedrunners"))) {
-			return;
-		}
+		if (!(e.getView().getTitle().equalsIgnoreCase(Main.TITLE_COLOR + "Speedrunners"))) return;
 		if (e.getCurrentItem() == null) return;
 		
 		Player hunter = (Player) e.getWhoClicked();
