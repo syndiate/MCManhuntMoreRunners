@@ -12,7 +12,7 @@ public class PlayerCommandCompleter implements TabCompleter {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if (args.length == 1) return new ArrayList<>(Arrays.asList("add","remove","help"));
+		if (args.length == 1) return new ArrayList<>(Arrays.asList("add","remove","clearinv","list","help"));
 		return null;
 	}
 

@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,9 +26,11 @@ public class Main extends JavaPlugin {
 	
 	
 	public static ArrayList<Player> RunnerList = new ArrayList<>();
+	public static Map<Player, Location> RunnerPortals = new HashMap<Player, Location>();
 	public static ArrayList<Player> DeadRunnerList = new ArrayList<>();
 	public static ArrayList<Player> HunterList = new ArrayList<>();
 	public static Map<Player, Player> HunterTracking = new HashMap<Player, Player>();
+	
 	
 	public static Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
 	
@@ -45,32 +47,40 @@ public class Main extends JavaPlugin {
 	public static final ChatColor REMOVED_COLOR = ChatColor.DARK_GREEN;
 	
 	
+	public static final String RUNNER_COMMAND = "runner";
+	public static final String HUNTER_COMMAND = "hunter";
+	public static final String MANHUNT_COMMAND = "manhunt";
+	public static final String TRACK_COMMAND = "track";
+	
+	
 
 	@Override
 	public void onEnable() {
 		
 		PluginManager manager = getServer().getPluginManager();
 		
-		this.getCommand("runner").setExecutor(new RunnerCommand());
-		this.getCommand("runner").setTabCompleter(new PlayerCommandCompleter());
+		this.getCommand(RUNNER_COMMAND).setExecutor(new RunnerCommand());
+		this.getCommand(RUNNER_COMMAND).setTabCompleter(new PlayerCommandCompleter());
 		
-		this.getCommand("hunter").setExecutor(new HunterCommand());
-		this.getCommand("hunter").setTabCompleter(new PlayerCommandCompleter());
+		this.getCommand(HUNTER_COMMAND).setExecutor(new HunterCommand());
+		this.getCommand(HUNTER_COMMAND).setTabCompleter(new PlayerCommandCompleter());
 		
-		this.getCommand("manhunt").setExecutor(new ManhuntCommand());
-		this.getCommand("manhunt").setTabCompleter(new ManhuntCommandCompleter());
+		this.getCommand(MANHUNT_COMMAND).setExecutor(new ManhuntCommand());
+		this.getCommand(MANHUNT_COMMAND).setTabCompleter(new ManhuntCommandCompleter());
 		
-		this.getCommand("track").setExecutor(new TrackCommand());
-		this.getCommand("track").setTabCompleter(new TrackCommandCompleter());
+		this.getCommand(TRACK_COMMAND).setExecutor(new TrackCommand());
+		this.getCommand(TRACK_COMMAND).setTabCompleter(new TrackCommandCompleter());
 		
 		manager.registerEvents(new DeathListener(), this);
 		manager.registerEvents(new RespawnListener(), this);
 		manager.registerEvents(new CompassListener(), this);
 		manager.registerEvents(new MenuListener(), this);
+		manager.registerEvents(new PortalListener(), this);
 		
-		getLogger().info("The Manhunt with Multiple Speedrunners plugin has been initialized! Type /manhunt help for more info.");
+		getLogger().info("The Manhunt with Multiple Speedrunners plugin has been initialized! Type /" + Main.MANHUNT_COMMAND + " help for more info.");
 
 	}
+	
 
 	@Override
 	public void onDisable() {
@@ -95,20 +105,18 @@ public class Main extends JavaPlugin {
 		
 	}
 	
-	public static void trackPlayer(Player hunter, Player runner, EntityPortalEvent portalEvent) {
+	
+	public static void trackPlayer(Player hunter, Player runner) {
 		Environment hunterEnv = hunter.getWorld().getEnvironment();
 		Environment runnerEnv = runner.getWorld().getEnvironment();
 		
-		if (hunterEnv == runnerEnv) hunter.setCompassTarget(runner.getLocation());
-		
-		if (portalEvent == null) {
-			hunter.sendMessage("Left-click to track " + runner.getName());
-		} else if (portalEvent.getEntity().equals(runner)) {
-			// this is for when the runner(s) enters a new dimension
-			hunter.setCompassTarget(portalEvent.getFrom());
-			hunter.sendMessage(ChatColor.GREEN + "Tracking " + runner.getName());
+		if (hunterEnv == runnerEnv) {
+			hunter.setCompassTarget(runner.getLocation());
+		} else {
+			hunter.setCompassTarget(RunnerPortals.get(runner));
 		}
-		
+
+		hunter.sendMessage(ChatColor.GREEN + "Tracking " + runner.getName());
 		HunterTracking.put(hunter, runner);
 	}
 

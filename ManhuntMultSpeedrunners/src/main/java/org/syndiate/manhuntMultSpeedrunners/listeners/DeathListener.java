@@ -3,7 +3,6 @@ package org.syndiate.manhuntMultSpeedrunners.listeners;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -28,7 +27,7 @@ public class DeathListener implements Listener {
 	
 	private void defeatMsg(ArrayList<Player> playerList) {
 		for (Player player : playerList) {
-			player.sendTitle(Main.DEFEAT_COLOR + "GAME OVER", ChatColor.WHITE + "You lost.", 10, 100, 20);
+			player.sendTitle(Main.DEFEAT_COLOR + "GAME OVER", "", 10, 100, 20);
 			player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, 1, 1);
 		}
 	}

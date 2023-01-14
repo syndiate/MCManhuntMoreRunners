@@ -20,18 +20,17 @@ public class ManhuntCommand implements CommandExecutor {
 		switch(manhuntOperation.toLowerCase()) {
 		
 			case "start": {
-				
 				if (Main.HunterList.size() == 0 || Main.RunnerList.size() == 0) {
-					sender.sendMessage(Main.ERROR_COLOR + "You have not specified any hunters and/or runners. The manhunt will not begin.");
+					sender.sendMessage(Main.ERROR_COLOR + "You have not added any hunters and/or runners. The manhunt will not begin.");
 					return false;
 				}
-				
-				
 				for (Player hunter : Main.HunterList) Main.giveCompass(hunter);
+				
 
 				Main.manhuntEnded = false;
 				server.broadcastMessage(ChatColor.GREEN + "The manhunt has started!");
 				break;
+				
 				
 			}
 			case "stop": {
@@ -47,17 +46,17 @@ public class ManhuntCommand implements CommandExecutor {
 			}
 			case "help": {
 				sender.sendMessage("List of command arguments for the manhunt command:");
-				sender.sendMessage("/manhunt start - Starts the manhunt.");
-				sender.sendMessage("/manhunt stop - Stops the manhunt.");
-				sender.sendMessage("/manhunt help - Provides a list of command arguments.");
+				sender.sendMessage("/" + Main.MANHUNT_COMMAND + " start - Starts the manhunt.");
+				sender.sendMessage("/" + Main.MANHUNT_COMMAND + " stop - Stops the manhunt.");
+				sender.sendMessage("/" + Main.MANHUNT_COMMAND + " help - Provides a list of command arguments.");
 				sender.sendMessage("List of other commands:");
-				sender.sendMessage("/runner help");
-				sender.sendMessage("/hunter help");
-				sender.sendMessage("/track help");
+				sender.sendMessage("/" + Main.RUNNER_COMMAND + " help");
+				sender.sendMessage("/" + Main.HUNTER_COMMAND + " help");
+				sender.sendMessage("/" + Main.TRACK_COMMAND + " help");
 				break;
 			}
 			default:
-				sender.sendMessage(Main.ERROR_COLOR + "Invalid input. Type \"/manhunt help\" for more details.");
+				sender.sendMessage(Main.ERROR_COLOR + "Invalid input. Type \"/" + Main.MANHUNT_COMMAND +" help\" for more details.");
 				
 		}
 		

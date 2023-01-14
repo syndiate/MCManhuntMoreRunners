@@ -17,7 +17,7 @@ public class MenuListener implements Listener {
 		Player hunter = (Player) e.getWhoClicked();
 		Player runner = hunter.getServer().getPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
 		
-		Main.trackPlayer(hunter, runner, null);
+		Main.trackPlayer(hunter, runner);
 		e.setCancelled(true);
 		hunter.closeInventory();
 		

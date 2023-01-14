@@ -1,5 +1,6 @@
-name: Minecraft Manhunt wihh Multiple Speedrunners
+name: MinecraftManhuntMoreRunners
 version: 1.0
+api-version: 1.14
 main: org.syndiate.manhuntMultSpeedrunners.Main
 author: syndiate
 description: A recreation of Dream's Minecraft Manhunt, except it allows for multiple speedrunners, unlike most other plugins.
