@@ -25,6 +25,7 @@ public class CompassListener implements Listener {
 				
 			if (!hunter.equals(p)) continue;
 			
+			
 			if (act.equals(Action.RIGHT_CLICK_AIR) || act.equals(Action.RIGHT_CLICK_BLOCK)) {
 				p.openInventory(Main.runnerMenu);
 			}

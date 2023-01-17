@@ -14,6 +14,7 @@ public class MenuListener implements Listener {
 		if (!(e.getView().getTitle().equalsIgnoreCase(Main.TITLE_COLOR + "Speedrunners"))) return;
 		if (e.getCurrentItem() == null) return;
 		
+		
 		Player hunter = (Player) e.getWhoClicked();
 		Player runner = hunter.getServer().getPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
 		

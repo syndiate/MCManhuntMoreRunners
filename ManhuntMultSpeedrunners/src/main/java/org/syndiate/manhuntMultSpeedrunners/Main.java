@@ -111,6 +111,7 @@ public class Main extends JavaPlugin {
 		Environment runnerEnv = runner.getWorld().getEnvironment();
 		
 		if (hunterEnv == runnerEnv) {
+			RunnerPortals.remove(runner);
 			hunter.setCompassTarget(runner.getLocation());
 		} else {
 			hunter.setCompassTarget(RunnerPortals.get(runner));

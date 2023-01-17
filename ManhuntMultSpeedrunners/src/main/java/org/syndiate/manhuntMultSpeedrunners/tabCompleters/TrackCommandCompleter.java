@@ -16,12 +16,9 @@ public class TrackCommandCompleter implements TabCompleter {
 		if (args.length != 1) return null;
 		
 		List<String> runners = new ArrayList<>();
-		
-		for (Player runner : Main.RunnerList) {
-			runners.add(runner.getDisplayName());
-		}
-		
+		for (Player runner : Main.RunnerList) runners.add(runner.getDisplayName());
 		return runners;
+		
 	}
 
 }

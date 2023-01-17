@@ -46,6 +46,7 @@ public class DeathListener implements Listener {
 			Player deadPlayer = (Player) deadEntity.getEntity();
 			Main.RunnerList.remove(deadPlayer);
 			Main.DeadRunnerList.add(deadPlayer);
+			
 				
 			if (Main.RunnerList.size() == 0) {
 					
@@ -67,8 +68,8 @@ public class DeathListener implements Listener {
 				
 				
 		} else if (deadEntity.getEntityType() == EntityType.ENDER_DRAGON) {
-				
-				
+			
+			
 			Main.manhuntEnded = true;
 			server.broadcastMessage(Main.VICTORY_COLOR + "The speedrunner(s) have WON the manhunt!");
 				
@@ -82,10 +83,10 @@ public class DeathListener implements Listener {
 				deadRunner.setGameMode(GameMode.SURVIVAL);
 					
 			}
-				
+			
 			victoryMsg(Main.RunnerList);
-				
-				
+			
+			
 			Main.HunterList.clear();
 			Main.RunnerList.clear();
 			Main.DeadRunnerList.clear();
