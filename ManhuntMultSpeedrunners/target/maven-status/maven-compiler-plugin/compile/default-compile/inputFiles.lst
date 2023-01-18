@@ -1,13 +1,13 @@
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\CompassListener.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\MenuListener.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\TrackCommand.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\PortalListener.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\PlayerCommandCompleter.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\RespawnListener.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\RunnerCommand.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\ManhuntCommand.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\TrackCommandCompleter.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\Main.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\DeathListener.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\HunterCommand.java
-C:\Users\Other user\Documents\MCPlugins\MinecraftManhuntMoreRunners\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\ManhuntCommandCompleter.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\DeathListener.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\TrackCommand.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\RunnerCommand.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\CompassListener.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\RespawnListener.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\PortalListener.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\listeners\MenuListener.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\Main.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\ManhuntCommand.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\commands\HunterCommand.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\ManhuntCommandCompleter.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\PlayerCommandCompleter.java
+C:\Users\syndi\Documents\JavaProjectsGit\ManhuntMultSpeedrunners\src\main\java\org\syndiate\manhuntMultSpeedrunners\tabCompleters\TrackCommandCompleter.java
