@@ -44,6 +44,19 @@ public class DeathListener implements Listener {
 				
 				
 			Player deadPlayer = (Player) deadEntity.getEntity();
+			boolean isRunner = false;
+			
+			
+			for (Player runner : Main.RunnerList) {
+				
+				if (!runner.equals(deadPlayer)) continue;
+				isRunner = true;
+				break;
+				
+			}
+			if (!isRunner) return;
+			
+			
 			Main.RunnerList.remove(deadPlayer);
 			Main.DeadRunnerList.add(deadPlayer);
 			

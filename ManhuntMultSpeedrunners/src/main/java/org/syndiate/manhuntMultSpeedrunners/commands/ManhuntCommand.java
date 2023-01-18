@@ -20,14 +20,14 @@ public class ManhuntCommand implements CommandExecutor {
 		switch(manhuntOperation.toLowerCase()) {
 		
 			case "start": {
+				Main.manhuntEnded = false;
 				if (Main.HunterList.size() == 0 || Main.RunnerList.size() == 0) {
 					sender.sendMessage(Main.ERROR_COLOR + "You have not added any hunters and/or runners. The manhunt will not begin.");
-					return false;
+					return true;
 				}
 				for (Player hunter : Main.HunterList) Main.giveCompass(hunter);
 				
 
-				Main.manhuntEnded = false;
 				server.broadcastMessage(ChatColor.GREEN + "The manhunt has started!");
 				break;
 				
@@ -35,8 +35,12 @@ public class ManhuntCommand implements CommandExecutor {
 			}
 			case "stop": {
 				
-				for (Player hunter : Main.HunterList) hunter.getInventory().remove(Material.COMPASS);
+				if (Main.manhuntEnded) {
+					sender.sendMessage(Main.ERROR_COLOR + "The manhunt has not yet started."); 
+					return true;
+				}
 				Main.manhuntEnded = true;
+				for (Player hunter : Main.HunterList) hunter.getInventory().remove(Material.COMPASS);
 				Main.RunnerList.clear();
 				Main.HunterList.clear();
 				Main.runnerMenu.clear();
@@ -57,10 +61,10 @@ public class ManhuntCommand implements CommandExecutor {
 			}
 			default:
 				sender.sendMessage(Main.ERROR_COLOR + "Invalid input. Type \"/" + Main.MANHUNT_COMMAND +" help\" for more details.");
-				
 		}
 		
 		return false;
+		
 	}
 	
 	

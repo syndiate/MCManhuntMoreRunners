@@ -14,7 +14,8 @@ public class CompassListener implements Listener {
 	public void onClick(PlayerInteractEvent event) {
 		
 		if (Main.manhuntEnded) return;
-		if (event.getMaterial() != Material.COMPASS) return;
+		if (event.getItem().getType() != Material.COMPASS) return;
+		//if (event.getMaterial() != Material.COMPASS) return;
 		
 			
 		Player p = event.getPlayer();
@@ -29,7 +30,7 @@ public class CompassListener implements Listener {
 			if (act.equals(Action.RIGHT_CLICK_AIR) || act.equals(Action.RIGHT_CLICK_BLOCK)) {
 				p.openInventory(Main.runnerMenu);
 			}
-			else if (act.equals(Action.PHYSICAL)) {
+			else if (act.equals(Action.PHYSICAL) || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
 				
 				
 				if (Main.HunterTracking.get(hunter) == null) {

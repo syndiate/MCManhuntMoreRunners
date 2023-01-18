@@ -35,7 +35,7 @@ public class RunnerCommand implements CommandExecutor {
 			case "list": {
 				sender.sendMessage("List of runners:");
 				for (Player runner : Main.RunnerList) sender.sendMessage(runner.getName());
-				return false;
+				return true;
 			}
 			case "clearinv": {
 				
@@ -61,7 +61,7 @@ public class RunnerCommand implements CommandExecutor {
 		
 		if (givenRunner == null) {
 			sender.sendMessage(Main.ERROR_COLOR + "Could not find the player specified.");
-			return false;
+			return true;
 		}
 		
 		
@@ -104,7 +104,7 @@ public class RunnerCommand implements CommandExecutor {
 		}
 		
 		
-		return false;
+		return true;
 		
 	}
 

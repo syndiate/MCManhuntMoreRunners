@@ -12,9 +12,11 @@ public class TrackCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		
+		if (args.length <= 0) return false;
+		
 		if (args[0].equals("help")) {
 			sender.sendMessage("Usage: /" + Main.TRACK_COMMAND + " <playerName> - Tracks a player via the compass.");
-			return false;
+			return true;
 		}
 		
 		
@@ -24,17 +26,17 @@ public class TrackCommand implements CommandExecutor {
 		
 		if (runner == null) {
 			sender.sendMessage(Main.ERROR_COLOR + "Player does not exist.");
-			return false;
+			return true;
 		}
 		for (Player hunter : Main.HunterList) {
 			if (!hunter.equals(p)) continue;
 			Main.trackPlayer(hunter, runner);
-			return false;
+			return true;
 		}
 
 		
 		sender.sendMessage(Main.ERROR_COLOR + "You are not a hunter.");
-		return false;
+		return true;
 		
 		
 	}

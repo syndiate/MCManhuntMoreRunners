@@ -31,7 +31,7 @@ public class HunterCommand implements CommandExecutor {
 			case "list": {
 				sender.sendMessage("List of hunters:");
 				for (Player hunter : Main.HunterList) sender.sendMessage(hunter.getName());
-				return false;
+				return true;
 			}
 			case "clearinv": {
 				
@@ -55,7 +55,7 @@ public class HunterCommand implements CommandExecutor {
 		
 		if (givenHunter == null) {
 			sender.sendMessage(Main.ERROR_COLOR + "Could not find the player specified.");
-			return false;
+			return true;
 		}
 		
 		
@@ -89,7 +89,7 @@ public class HunterCommand implements CommandExecutor {
 		}
 		
 		
-		return false;
+		return true;
 		
 	}
 

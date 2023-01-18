@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -25,20 +24,6 @@ import org.syndiate.manhuntMultSpeedrunners.tabCompleters.*;
 public class Main extends JavaPlugin {
 	
 	
-	public static ArrayList<Player> RunnerList = new ArrayList<>();
-	public static Map<Player, Location> RunnerPortals = new HashMap<Player, Location>();
-	public static ArrayList<Player> DeadRunnerList = new ArrayList<>();
-	public static ArrayList<Player> HunterList = new ArrayList<>();
-	public static Map<Player, Player> HunterTracking = new HashMap<Player, Player>();
-	
-	
-	public static Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
-	
-	
-	public static boolean menuOpen = false;
-	public static boolean manhuntEnded;
-	
-	
 	public static final ChatColor ERROR_COLOR = ChatColor.DARK_RED;
 	public static final ChatColor VICTORY_COLOR = ChatColor.GOLD;
 	public static final ChatColor DEFEAT_COLOR = ChatColor.RED;
@@ -51,6 +36,24 @@ public class Main extends JavaPlugin {
 	public static final String HUNTER_COMMAND = "hunter";
 	public static final String MANHUNT_COMMAND = "manhunt";
 	public static final String TRACK_COMMAND = "track";
+	
+	
+	
+	
+	
+	public static ArrayList<Player> RunnerList = new ArrayList<>();
+	public static Map<Player, Location> RunnerPortals = new HashMap<Player, Location>();
+	public static ArrayList<Player> DeadRunnerList = new ArrayList<>();
+	public static ArrayList<Player> HunterList = new ArrayList<>();
+	public static Map<Player, Player> HunterTracking = new HashMap<Player, Player>();
+	
+	
+	public static Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
+	
+	
+	public static boolean menuOpen = false;
+	public static boolean manhuntEnded = true;
+	
 	
 	
 
@@ -98,9 +101,7 @@ public class Main extends JavaPlugin {
 		
 		if (Main.manhuntEnded) return;
 		
-		ItemStack HunterCompass = new ItemStack(Material.COMPASS);
-		HunterCompass.addEnchantment(Enchantment.VANISHING_CURSE, 1);
-
+		ItemStack HunterCompass = new ItemStack(Material.COMPASS, 1);
 		p.getInventory().addItem(HunterCompass);
 		
 	}

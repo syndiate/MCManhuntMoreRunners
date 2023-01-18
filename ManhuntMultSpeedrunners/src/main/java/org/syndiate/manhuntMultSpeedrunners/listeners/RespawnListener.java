@@ -12,6 +12,7 @@ public class RespawnListener implements Listener {
 	public void onRespawn(PlayerRespawnEvent e) {
 		
 		Player respawnedPlayer = e.getPlayer();
+		if (Main.manhuntEnded) return; 
 		for (Player p : Main.HunterList) if (respawnedPlayer.equals(p)) Main.giveCompass(p);
 		
 	}
