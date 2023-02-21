@@ -1,11 +1,14 @@
 package org.syndiate.manhuntMultSpeedrunners.commands;
 
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.syndiate.manhuntMultSpeedrunners.Main;
 
 public class HunterCommand implements CommandExecutor {
@@ -59,11 +62,29 @@ public class HunterCommand implements CommandExecutor {
 		}
 		
 		
+		ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+		skullMeta.setOwningPlayer(givenHunter);
+		playerHead.setItemMeta(skullMeta);
+		
+		
+		
 		switch(listOperation) {
 		
 			case "add": {
+				
+				
+				if (Main.RunnerList.contains(givenHunter)) {
+					sender.sendMessage(Main.ERROR_COLOR + "This player is already a hunter.");
+					return true;
+				}
+				
+				
 				Main.RunnerList.remove(givenHunter);
+				Main.DeadRunnerList.remove(givenHunter);
 				Main.HunterList.add(givenHunter);
+				Main.compassMenuItem(givenHunter);
+				
 				
 				givenHunter.setHealth(givenHunter.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 				givenHunter.setFoodLevel(20);

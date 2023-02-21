@@ -14,7 +14,7 @@ commands:
     usage: /hunter [add|remove|help]
   manhunt: 
     description: Initiates/stops the manhunt.
-    usage: /manhunt [start|stop|help]
+    usage: /manhunt [start|stop|status|help]
   track: 
     description: Tracks a speedrunner.
     usage: /track <runnerUsername>

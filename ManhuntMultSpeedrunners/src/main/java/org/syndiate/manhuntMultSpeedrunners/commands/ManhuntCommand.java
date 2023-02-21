@@ -17,17 +17,24 @@ public class ManhuntCommand implements CommandExecutor {
 		String manhuntOperation = args[0];
 		Server server = sender.getServer();
 		
-		switch(manhuntOperation.toLowerCase()) {
+		switch (manhuntOperation.toLowerCase()) {
 		
 			case "start": {
-				Main.manhuntEnded = false;
+				
+				
 				if (Main.HunterList.size() == 0 || Main.RunnerList.size() == 0) {
 					sender.sendMessage(Main.ERROR_COLOR + "You have not added any hunters and/or runners. The manhunt will not begin.");
 					return true;
 				}
+				
+				Main.HunterTracking.clear();
+				Main.DeadRunnerList.clear();
+				Main.RunnerPortals.clear();
+				
 				for (Player hunter : Main.HunterList) Main.giveCompass(hunter);
 				
-
+				
+				Main.manhuntEnded = false;
 				server.broadcastMessage(ChatColor.GREEN + "The manhunt has started!");
 				break;
 				
@@ -48,6 +55,27 @@ public class ManhuntCommand implements CommandExecutor {
 				break;
 				
 			}
+			case "status": {
+				
+				if (Main.manhuntEnded) {
+					sender.sendMessage("The manhunt is not going on.");
+				} else {
+					sender.sendMessage("The manhunt is going on.");
+				}
+				return true;
+				
+			}
+			
+			
+			case "debug": {
+				sender.sendMessage("Runners:"  + Main.RunnerList.toString());
+				sender.sendMessage("Hunters:" + Main.HunterList.toString());
+				sender.sendMessage("Dead runners:" + Main.DeadRunnerList.toString());
+				sender.sendMessage("RunnerPortals" + Main.RunnerPortals.toString());
+				sender.sendMessage("HunterTracking" + Main.HunterTracking.toString());
+				return true;
+			}
+			
 			case "help": {
 				sender.sendMessage("List of command arguments for the manhunt command:");
 				sender.sendMessage("/" + Main.MANHUNT_COMMAND + " start - Starts the manhunt.");

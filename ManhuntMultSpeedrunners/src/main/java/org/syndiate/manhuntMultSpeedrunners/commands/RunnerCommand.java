@@ -65,19 +65,27 @@ public class RunnerCommand implements CommandExecutor {
 		}
 		
 		
-		ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-		SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
-		skullMeta.setOwningPlayer(givenRunner);
-		playerHead.setItemMeta(skullMeta);
+		
 		
 		
 		
 		switch(listOperation) {
 		
 			case "add": {
+				
+				
+				if (Main.RunnerList.contains(givenRunner)) {
+					sender.sendMessage(Main.ERROR_COLOR + "This player is already a runner.");
+					return true;
+				}
+				
+				
 				Main.HunterList.remove(givenRunner);
+				Main.DeadRunnerList.remove(givenRunner);
 				Main.RunnerList.add(givenRunner);
-				Main.runnerMenu.addItem(playerHead);
+				Main.compassMenuItem(givenRunner);
+				
+				
 				
 				givenRunner.setHealth(givenRunner.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 				givenRunner.setFoodLevel(20);
@@ -87,8 +95,19 @@ public class RunnerCommand implements CommandExecutor {
 				break;
 			}
 			case "remove": {
+				
+				
+				if (!Main.RunnerList.contains(givenRunner)) {
+					sender.sendMessage(Main.ERROR_COLOR + "This player was not a runner.");
+					return true;
+				}
+				
+				
 				Main.RunnerList.remove(givenRunner);
-				Main.runnerMenu.removeItem(playerHead);
+				Main.DeadRunnerList.remove(givenRunner);
+				Main.compassMenuItem(givenRunner);
+				
+				
 				server.broadcastMessage(Main.REMOVED_COLOR + givenRunner.getName() + " was removed as a runner.");
 				break;
 			}

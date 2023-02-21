@@ -13,6 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.syndiate.manhuntMultSpeedrunners.commands.*;
@@ -79,6 +82,7 @@ public class Main extends JavaPlugin {
 		manager.registerEvents(new CompassListener(), this);
 		manager.registerEvents(new MenuListener(), this);
 		manager.registerEvents(new PortalListener(), this);
+		manager.registerEvents(new DamageListener(),  this);
 		
 		getLogger().info("The Manhunt with Multiple Speedrunners plugin has been initialized! Type /" + Main.MANHUNT_COMMAND + " help for more info.");
 
@@ -105,9 +109,33 @@ public class Main extends JavaPlugin {
 		p.getInventory().addItem(HunterCompass);
 		
 	}
+
+	
+	
+	
 	
 	
 	public static void trackPlayer(Player hunter, Player runner) {
+		
+		PlayerInventory hunterInv = hunter.getInventory();
+		int compassPosition = hunterInv.first(Material.COMPASS);
+		
+		if (compassPosition < 0) {
+			hunter.sendMessage(Main.ERROR_COLOR + "You don't have a compass in your inventory.");
+			return;
+		}
+		
+		
+		if (Main.HunterList.contains(runner)) {
+			hunter.sendMessage(Main.ERROR_COLOR + "This player is a hunter.");
+			return;
+		}
+		if (Main.DeadRunnerList.contains(runner)) {
+			hunter.sendMessage(Main.ERROR_COLOR + "This runner has died.");
+			return;
+		}
+		
+		
 		Environment hunterEnv = hunter.getWorld().getEnvironment();
 		Environment runnerEnv = runner.getWorld().getEnvironment();
 		
@@ -120,6 +148,30 @@ public class Main extends JavaPlugin {
 
 		hunter.sendMessage(ChatColor.GREEN + "Tracking " + runner.getName());
 		HunterTracking.put(hunter, runner);
+	}
+	
+	
+	
+	
+	
+	public static void compassMenuItem(Player p) {
+		
+		ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+		skullMeta.setOwningPlayer(p);
+		skullMeta.setDisplayName(p.getDisplayName());
+		playerHead.setItemMeta(skullMeta);
+		
+		
+		if (Main.RunnerList.contains(p)) {
+			Main.runnerMenu.removeItem(playerHead);
+			Main.runnerMenu.addItem(playerHead);
+			return;
+		}
+		
+		Main.runnerMenu.removeItem(playerHead);
+		
+		
 	}
 
 }

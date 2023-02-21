@@ -1,4 +1,5 @@
 org\syndiate\manhuntMultSpeedrunners\listeners\MenuListener.class
+org\syndiate\manhuntMultSpeedrunners\listeners\DamageListener.class
 org\syndiate\manhuntMultSpeedrunners\commands\HunterCommand.class
 org\syndiate\manhuntMultSpeedrunners\listeners\DeathListener.class
 org\syndiate\manhuntMultSpeedrunners\listeners\RespawnListener.class

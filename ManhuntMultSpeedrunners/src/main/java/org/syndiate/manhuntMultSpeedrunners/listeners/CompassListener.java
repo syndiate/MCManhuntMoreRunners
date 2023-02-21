@@ -17,9 +17,12 @@ public class CompassListener implements Listener {
 		if (event.getItem().getType() != Material.COMPASS) return;
 		//if (event.getMaterial() != Material.COMPASS) return;
 		
-			
+		
+		event.setCancelled(true);
+		
 		Player p = event.getPlayer();
 		Action act = event.getAction();
+		
 		
 			
 		for (Player hunter : Main.HunterList) {
