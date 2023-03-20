@@ -13,20 +13,28 @@ public class CompassListener implements Listener {
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 		
-		if (Main.manhuntEnded) return;
-		if (event == null || event.getItem() == null) return;
-		if (event.getItem().getType() != Material.COMPASS) return;
-		//if (event.getMaterial() != Material.COMPASS) return;
-		
-		
-		event.setCancelled(true);
 		
 		Player p = event.getPlayer();
 		Action act = event.getAction();
 		
-		if (!Main.HunterList.contains(p)) return;
-
 		
+		if (Main.manhuntEnded || event == null) {
+			return;
+		}
+		if (event.getItem() == null) {
+			return;
+		}
+		if (event.getItem().getType() != Material.COMPASS) {
+			return;
+		}
+		if (!Main.HunterList.contains(p)) {
+			return;
+		}
+		event.setCancelled(true);
+		
+		
+		
+
 		
 		
 		if (act.equals(Action.RIGHT_CLICK_AIR) || act.equals(Action.RIGHT_CLICK_BLOCK)) {

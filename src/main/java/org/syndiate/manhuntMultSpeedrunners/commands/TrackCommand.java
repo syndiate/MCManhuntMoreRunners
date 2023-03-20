@@ -12,7 +12,9 @@ public class TrackCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		
-		if (args.length <= 0) return false;
+		if (args.length <= 0) {
+			return false;
+		}
 		
 		if (args[0].equals("help")) {
 			sender.sendMessage("Usage: /" + Main.TRACK_COMMAND + " <playerName> - Tracks a player via the compass.");

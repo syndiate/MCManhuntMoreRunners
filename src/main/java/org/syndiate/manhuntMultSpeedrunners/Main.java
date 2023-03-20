@@ -29,6 +29,9 @@ import org.syndiate.manhuntMultSpeedrunners.tabCompleters.*;
 public class Main extends JavaPlugin {
 	
 	
+	
+	
+	
 	public static final ChatColor ERROR_COLOR = ChatColor.DARK_RED;
 	public static final ChatColor VICTORY_COLOR = ChatColor.GOLD;
 	public static final ChatColor DEFEAT_COLOR = ChatColor.RED;
@@ -51,21 +54,26 @@ public class Main extends JavaPlugin {
 	public static ArrayList<Player> HunterList = new ArrayList<>();
 	
 	
+	public static Map<Player, Location> PortalEntrances = new HashMap<Player, Location>();
+	public static Map<Player, Location> PortalExits = new HashMap<Player, Location>();
+	
 	public static Map<Player, Location> RunnerPortals = new HashMap<Player, Location>();
 	public static Map<Player, Player> HunterTracking = new HashMap<Player, Player>();
 	public static Map<UUID, String> DisconnectedPlayers = new HashMap<UUID, String>();
 	
 	
-	public static Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
+	public static final Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
 	
-	public static boolean menuOpen = false;
+	public static final boolean supportsModernHeads = Main.versionCompat("1.13");
 	public static boolean manhuntEnded = true;
 	
-	public static boolean supportsModernHeads = Main.versionCompat("1.13");
+	
 	
 	
 	
 
+	
+	
 	@Override
 	public void onEnable() {
 		
@@ -102,6 +110,8 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	
+	
 	/**
 	 * 
 	 * universal functions
@@ -111,7 +121,9 @@ public class Main extends JavaPlugin {
 	
 	public static void addHunter(Player givenHunter) {
 
-		if (Main.HunterList.contains(givenHunter)) return;
+		if (Main.HunterList.contains(givenHunter)) {
+			return;
+		}
 		
 		Main.removeRunner(givenHunter);
 		Main.HunterList.remove(givenHunter);
@@ -128,15 +140,21 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	
+	
 	public static void addRunner(Player givenRunner) {
 		
-		if (Main.RunnerList.contains(givenRunner)) return;
+		if (Main.RunnerList.contains(givenRunner)) {
+			return;
+		}
 		
 		Main.RunnerList.add(givenRunner);
 		Main.addCompassItem(givenRunner);
 		Main.setMaxHealth(givenRunner);
 		
 	}
+	
+	
 	
 	@SuppressWarnings("deprecation")
 	private static void setMaxHealth(Player p) {
@@ -167,15 +185,19 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	
 	public static void removeRunner(Player givenRunner) {
 		Main.RunnerList.remove(givenRunner);
 		Main.DeadRunnerList.remove(givenRunner);
-		Main.DisconnectedPlayers.remove(givenRunner.getUniqueId());
 		Main.removeCompassItem(givenRunner);
+		Main.DisconnectedPlayers.remove(givenRunner.getUniqueId());
+//		Main.removeCompassItem(givenRunner);
 		
 		for (Map.Entry<Player, Player> entry : Main.HunterTracking.entrySet()) {
 			
-			if (!entry.getValue().getUniqueId().equals(givenRunner.getUniqueId())) continue;
+			if (!entry.getValue().getUniqueId().equals(givenRunner.getUniqueId())) {
+				continue;
+			}
 			Main.HunterTracking.remove(entry.getKey());
 			
 		}
@@ -185,11 +207,13 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	
+	
 	public static void giveCompass(Player p) {
 		
-		if (Main.manhuntEnded) return;
-		if (!Main.HunterList.contains(p)) return;
-		if (p.getInventory().contains(Material.COMPASS)) return;
+		if (Main.manhuntEnded || !Main.HunterList.contains(p) || p.getInventory().contains(Material.COMPASS)) {
+			return;
+		}
 		
 		ItemStack HunterCompass = new ItemStack(Material.COMPASS, 1);
 		p.getInventory().addItem(HunterCompass);
@@ -202,21 +226,25 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	
+	
+	
 	public static void trackPlayer(Player hunter, Player runner) {
 		
 		
-		if (hunter == null) return;
-		
+		if (hunter == null) {
+			return;
+		}
 		if (runner == null) {
 			hunter.sendMessage(Main.ERROR_COLOR + "Player does not exist.");
 			return;
 		}
 		
+		
 		if (!Main.HunterList.contains(hunter)) {
 			hunter.sendMessage(Main.ERROR_COLOR + "You may not track a player because you are not a hunter.");
 			return;
 		}
-		
 		if (!Main.RunnerList.contains(runner)) {
 			hunter.sendMessage(Main.ERROR_COLOR + "You may not track this player because they are not a runner.");
 			return;
@@ -247,8 +275,44 @@ public class Main extends JavaPlugin {
 		
 		Environment hunterEnv = hunter.getWorld().getEnvironment();
 		Environment runnerEnv = runner.getWorld().getEnvironment();
+		Location runnerLoc = runner.getLocation();
 		
-		Location runnerLoc = hunterEnv == runnerEnv ? runner.getLocation() : Main.RunnerPortals.get(runner);
+		
+		// TODO: EXTREMELY DIRTY SOLUTION, CLEAN UP LATER
+		if (hunterEnv.equals(runnerEnv)) {
+			runnerLoc = runner.getLocation();
+		} else {
+		
+		if (hunterEnv.equals(Environment.NORMAL)) {
+			
+			if (runnerEnv.equals(Environment.NETHER)) {
+				runnerLoc = Main.PortalEntrances.get(runner);
+			}
+			if (runnerEnv.equals(Environment.THE_END)) {
+				runnerLoc = Main.PortalEntrances.get(runner);
+			}
+			
+		} else if (hunterEnv.equals(Environment.NETHER)) {
+			
+			if (runnerEnv.equals(Environment.NORMAL)) {
+				runnerLoc = Main.PortalExits.get(hunter);
+			}
+			if (runnerEnv.equals(Environment.THE_END)) {
+				runnerLoc = Main.PortalExits.get(hunter);
+			}
+		} else if (hunterEnv.equals(Environment.THE_END)) {
+			
+			if (runnerEnv.equals(Environment.NORMAL)) {
+				runnerLoc = Main.PortalExits.get(hunter);
+			}
+			if (runnerEnv.equals(Environment.NETHER)) {
+				runnerLoc = Main.PortalExits.get(hunter);
+			}
+		}
+		
+		}
+		
+//		Location runnerLoc = hunterEnv.equals(runnerEnv) ? runner.getLocation() : Main.RunnerPortals.get(runner);
 		
 		
 		if (Main.versionCompat("1.16")) {
@@ -272,6 +336,8 @@ public class Main extends JavaPlugin {
 		hunter.sendMessage(ChatColor.GREEN + "Tracking " + runner.getName());
 		HunterTracking.put(hunter, runner);
 	}
+	
+	
 	
 	
 	
@@ -303,40 +369,55 @@ public class Main extends JavaPlugin {
 		}
 		
 
-		if (!Main.RunnerList.contains(p)) return;
+		if (!Main.RunnerList.contains(p)) {
+			return;
+		}
 		
 		Main.removeCompassItem(p);
 		Main.runnerMenu.addItem(playerHead);
 		
 	}
 	
+	
+	
+	
 	@SuppressWarnings("deprecation")
 	public static void removeCompassItem(Player p) {
 		
 	
 		for (ItemStack runnerHead : runnerMenu.getContents()) {
-			if (runnerHead == null) continue;
-
-			if (runnerHead.getType() != 
-					(Main.supportsModernHeads ? Material.getMaterial("PLAYER_HEAD") 
-							: Material.getMaterial("SKULL_ITEM")
-					)
-			    ) continue;
+			if (runnerHead == null) {
+				continue;
+			}
 			
+			Material headType = Main.supportsModernHeads ? Material.getMaterial("PLAYER_HEAD") : Material.getMaterial("SKULL_ITEM");
+
+			if (runnerHead.getType() != headType) {
+				continue;
+			}
 			
 			
 			SkullMeta skullMeta = (SkullMeta) runnerHead.getItemMeta();
+			UUID pId = p.getUniqueId();
 			
 			
 			if (Main.supportsModernHeads) {
 			
-				if (skullMeta.getOwningPlayer() == null) continue;
-				if (!skullMeta.getOwningPlayer().getUniqueId().equals(p.getUniqueId())) continue;
+				if (skullMeta.getOwningPlayer() == null) {
+					continue;
+				}
+				if (!skullMeta.getOwningPlayer().getUniqueId().equals(pId)) {
+					continue;
+				}
 					
 			} else {
 					
-				if (skullMeta.getOwner() == null) continue;
-				if (Bukkit.getPlayer(skullMeta.getOwner()).getUniqueId().equals(p.getUniqueId())) continue;
+				if (skullMeta.getOwner() == null) {
+					continue;
+				}
+				if (Bukkit.getPlayer(skullMeta.getOwner()).getUniqueId().equals(pId)) {
+					continue;
+				}
 					
 			}
 			
@@ -352,8 +433,9 @@ public class Main extends JavaPlugin {
 			
 			int itemIndex = Main.runnerMenu.first(item);
 			
-			if (itemIndex == 0) return;
-			if (Main.runnerMenu.getItem(itemIndex - 1) != null) return;
+			if (itemIndex == 0 || Main.runnerMenu.getItem(itemIndex - 1) != null) {
+				return;
+			}
 
 			Main.runnerMenu.setItem(itemIndex - 1, item);
 			Main.runnerMenu.setItem(itemIndex, null);
@@ -387,5 +469,34 @@ public class Main extends JavaPlugin {
 	    // The version numbers are equal
 	    return true;
 	}
+
+
+	
+
+	
+	
+	
+
+	
+	
+	public static void putPortalEntrance(Player p, Location location) {
+        PortalEntrances.put(p, location);
+    }
+
+    public static void clearPortalEntrance(Player p) {
+        PortalEntrances.remove(p);
+    }
+
+    public static void putPortalExit(Player p, Location location) {
+        PortalExits.put(p, location);
+    }
+
+    public static void clearPortalExit(Player p) {
+        PortalExits.remove(p);
+    }
+	
+	
+
+	
 
 }

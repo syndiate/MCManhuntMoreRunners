@@ -12,15 +12,17 @@ public class DamageListener implements Listener {
     @EventHandler
     public void theEndDamageEvent(EntityDamageByEntityEvent e) {
     	
-    	if (Main.manhuntEnded) return;
     	
-    	if (e.getEntityType() != EntityType.ENDER_DRAGON 
-    		|| e.getEntityType() != EntityType.ENDER_CRYSTAL) return;
-    	if (e.getDamager().getType() != EntityType.PLAYER) return;
-    	
-    	if (!Main.HunterList.contains((Player) e.getDamager())) return;
+    	if (Main.manhuntEnded || (e.getEntityType() != EntityType.ENDER_DRAGON && e.getEntityType() != EntityType.ENDER_CRYSTAL)) {
+    		return;
+    	}
+    	if (e.getDamager().getType() != EntityType.PLAYER) {
+    		return;
+    	}
+    	if (!Main.HunterList.contains((Player) e.getDamager())) {
+    		return;
+    	}
 
-        
     	e.setCancelled(true);
          
     }

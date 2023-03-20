@@ -28,12 +28,16 @@ public class HunterCommand implements CommandExecutor {
 			}
 			case "list": {
 				sender.sendMessage("List of hunters:");
-				for (Player hunter : Main.HunterList) sender.sendMessage(hunter.getName());
+				for (Player hunter : Main.HunterList) {
+					sender.sendMessage(hunter.getName());
+				}
 				return true;
 			}
 			case "clearinv": {
 			
-				for (Player hunter : Main.HunterList) hunter.getInventory().clear();
+				for (Player hunter : Main.HunterList) {
+					hunter.getInventory().clear();
+				}
 				sender.sendMessage(Main.REMOVED_COLOR + "All hunters' inventories have been cleared.");
 				return true;
 			
@@ -42,8 +46,9 @@ public class HunterCommand implements CommandExecutor {
 				
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					
-					if (Main.RunnerList.contains(p)) continue;
-					if (Main.HunterList.contains(p)) continue;
+					if (Main.RunnerList.contains(p) || Main.HunterList.contains(p)) {
+						continue;
+					}
 					Main.addHunter(p);
 					
 				}
@@ -68,13 +73,23 @@ public class HunterCommand implements CommandExecutor {
 		
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		Server server = sender.getServer();
 		String listOperation = args[0].toLowerCase();
 		
-		if (args.length == 1) return singleArg(sender, cmd, label, args);
+		if (args.length == 1) {
+			return singleArg(sender, cmd, label, args);
+		}
 		
 		
 		

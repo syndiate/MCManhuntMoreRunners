@@ -32,7 +32,9 @@ public class ManhuntCommand implements CommandExecutor {
 				Main.RunnerPortals.clear();
 				
 				Main.manhuntEnded = false;
-				for (Player hunter : Main.HunterList) Main.giveCompass(hunter);
+				for (Player hunter : Main.HunterList) {
+					Main.giveCompass(hunter);
+				}
 				
 				server.broadcastMessage(ChatColor.GREEN + "The manhunt has started!");
 				return true;
@@ -46,7 +48,9 @@ public class ManhuntCommand implements CommandExecutor {
 				}
 				Main.manhuntEnded = true;
 				
-				for (Player hunter : Main.HunterList) hunter.getInventory().remove(Material.COMPASS);
+				for (Player hunter : Main.HunterList) {
+					hunter.getInventory().remove(Material.COMPASS);
+				}
 				
 				Main.RunnerList.clear();
 				Main.HunterList.clear();

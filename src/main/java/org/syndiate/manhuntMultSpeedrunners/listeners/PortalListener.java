@@ -1,5 +1,8 @@
 package org.syndiate.manhuntMultSpeedrunners.listeners;
 
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,15 +14,37 @@ public class PortalListener implements Listener {
 	@EventHandler
     public void onEntityPortal(EntityPortalEvent event) {
 		
-		if (Main.manhuntEnded) return; 
-		if (!(event.getEntity() instanceof Player)) return;
 		
+		if (Main.manhuntEnded || event.getEntity().getType() != EntityType.PLAYER) {
+			return; 
+		}
 		Player p = (Player) event.getEntity();
 		
 		
-		if (!Main.RunnerList.contains(p)) return;
+		Location from = event.getFrom();
+        Location to = event.getTo();
+        World.Environment fromEnv = from.getWorld().getEnvironment();
+        
+        
+        if (fromEnv == World.Environment.NORMAL) {
+            Main.putPortalEntrance(p, from);
+            // Store exit portal location so player can track their own portal
+            Main.putPortalExit(p, to);
+        } else {
+            // Player is leaving the Nether/End, so remove their entrance portal location
+            Main.clearPortalEntrance(p);
+            // Store new exit portal location so other players can follow
+            Main.putPortalExit(p, from);
+        }
+        
+        /*
+		if (!Main.RunnerList.contains(p)) {
+			return;
+		}
+		
+		
 		Main.RunnerPortals.remove(p);
-		Main.RunnerPortals.put(p, event.getFrom());
+		Main.RunnerPortals.put(p, event.getFrom());*/
 
     }
 	

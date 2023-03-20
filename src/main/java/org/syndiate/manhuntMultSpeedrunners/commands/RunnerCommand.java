@@ -29,11 +29,15 @@ public class RunnerCommand implements CommandExecutor {
 			}
 			case "list": {
 				sender.sendMessage("List of runners:");
-				for (Player runner : Main.RunnerList) sender.sendMessage(runner.getName());
+				for (Player runner : Main.RunnerList) {
+					sender.sendMessage(runner.getName());
+				}
 				return true;
 			}
 			case "clearinv": {
-				for (Player runner : Main.RunnerList) runner.getInventory().clear();
+				for (Player runner : Main.RunnerList) {
+					runner.getInventory().clear();
+				}
 				sender.sendMessage(Main.REMOVED_COLOR + "All runners' inventories have been cleared.");
 				return true;
 			}
@@ -41,8 +45,9 @@ public class RunnerCommand implements CommandExecutor {
 				
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					
-					if (Main.RunnerList.contains(p)) continue;
-					if (Main.HunterList.contains(p)) continue;
+					if (Main.RunnerList.contains(p) || Main.HunterList.contains(p)) {
+						continue;
+					}
 					Main.addRunner(p);
 					
 				}
@@ -81,7 +86,9 @@ public class RunnerCommand implements CommandExecutor {
 		Server server = sender.getServer();
 		String listOperation = args[0].toLowerCase();
 		
-		if (args.length == 1) return singleArg(sender, cmd, label, args);
+		if (args.length == 1) {
+			return singleArg(sender, cmd, label, args);
+		}
 		
 		
 		

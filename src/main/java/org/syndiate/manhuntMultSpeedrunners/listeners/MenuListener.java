@@ -14,9 +14,15 @@ public class MenuListener implements Listener {
 	@EventHandler
 	public void onMenuClick(InventoryClickEvent e) {
 		
-		if (e == null) return;
-		if (e.getCurrentItem() == null) return;
-		if (!(e.getView().getTitle().equalsIgnoreCase(Main.TITLE_COLOR + "Speedrunners"))) return;
+		if (e == null) {
+			return;
+		}
+		if (e.getCurrentItem() == null) {
+			return;
+		}
+		if (!(e.getView().getTitle().equalsIgnoreCase(Main.TITLE_COLOR + "Speedrunners"))) {
+			return;
+		}
 		
 		
 		

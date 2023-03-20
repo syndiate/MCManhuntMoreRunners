@@ -40,7 +40,10 @@ public class PlayerEventListener implements Listener {
 	
 	@EventHandler
 	public void onDeath(EntityDeathEvent deadEntity) {
-		if (Main.manhuntEnded) return;
+		
+		if (Main.manhuntEnded) {
+			return;
+		}
 			
 		Server server = deadEntity.getEntity().getServer();
 			
@@ -48,16 +51,21 @@ public class PlayerEventListener implements Listener {
 				
 				
 			Player deadPlayer = (Player) deadEntity.getEntity();
-			if (!Main.RunnerList.contains(deadPlayer)) return;
+			if (!Main.RunnerList.contains(deadPlayer)) {
+				return;
+			}
 			
 			
 			Main.RunnerList.remove(deadPlayer);
 			Main.DeadRunnerList.add(deadPlayer);
+			Main.removeCompassItem(deadPlayer);
 			deadPlayer.setGameMode(GameMode.SPECTATOR);
 			
 			
 			
-			if (Main.RunnerList.size() > 0) return;
+			if (Main.RunnerList.size() > 0) {
+				return;
+			}
 					
 			Main.manhuntEnded = true;
 			server.broadcastMessage(Main.VICTORY_COLOR + "The hunters have won the manhunt!");
@@ -106,7 +114,9 @@ public class PlayerEventListener implements Listener {
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent e) {
 		
-		if (Main.manhuntEnded) return; 
+		if (Main.manhuntEnded) {
+			return; 
+		}
 		
 		Player respawnedPlayer = e.getPlayer();
 		Main.giveCompass(respawnedPlayer);
@@ -119,7 +129,9 @@ public class PlayerEventListener implements Listener {
 	@EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent event) {
 		
-		if (Main.manhuntEnded) return;
+		if (Main.manhuntEnded) {
+			return;
+		}
 		
 		Player p = event.getPlayer();
 		UUID pId = p.getUniqueId();
@@ -152,11 +164,15 @@ public class PlayerEventListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		
-		if (Main.manhuntEnded) return;
+		if (Main.manhuntEnded) {
+			return;
+		}
 		
 		Player p = event.getPlayer();
 		UUID pId = p.getUniqueId();
-		if (!Main.DisconnectedPlayers.containsKey(pId)) return;
+		if (!Main.DisconnectedPlayers.containsKey(pId)) {
+			return;
+		}
 		
 		switch(Main.DisconnectedPlayers.get(pId)) {
 		
