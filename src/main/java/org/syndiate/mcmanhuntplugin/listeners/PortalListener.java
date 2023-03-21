@@ -19,12 +19,23 @@ public class PortalListener implements Listener {
 			return; 
 		}
 		Player p = (Player) event.getEntity();
+		if (!Main.RunnerList.contains(p)) {
+			return;
+		}
 		
 		
 		Location from = event.getFrom();
         World.Environment fromEnv = from.getWorld().getEnvironment();
         
         
+        if (fromEnv.equals(World.Environment.NORMAL)) {
+        	Main.clearPortalExit(p);
+        	Main.putPortalEntrance(p, from);
+        } else {
+        	Main.clearPortalEntrance(p);
+        	Main.putPortalExit(p, from);
+        }
+        /*
         if (fromEnv == World.Environment.NORMAL) {
             Main.putPortalEntrance(p, from);
             // Store exit portal location so player can track their own portal
@@ -33,7 +44,7 @@ public class PortalListener implements Listener {
             // Player is leaving the Nether/End, so remove their entrance portal location
             Main.clearPortalEntrance(p);
             Main.putPortalExit(p, from);
-        }
+        }*/
         
         /*
 		if (!Main.RunnerList.contains(p)) {

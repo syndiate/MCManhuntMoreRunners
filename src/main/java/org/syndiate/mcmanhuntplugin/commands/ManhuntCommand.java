@@ -79,6 +79,8 @@ public class ManhuntCommand implements CommandExecutor {
 				sender.sendMessage("RunnerPortals" + Main.RunnerPortals.toString());
 				sender.sendMessage("HunterTracking" + Main.HunterTracking.toString());
 				sender.sendMessage("Disconnected Players" + Main.DisconnectedPlayers.toString());
+				sender.sendMessage("Portal Entrances" + Main.PortalEntrances.toString());
+				sender.sendMessage("Portal Exits" + Main.PortalExits.toString());
 				return true;
 			}
 			

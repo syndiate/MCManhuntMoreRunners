@@ -350,6 +350,10 @@ public class Main extends JavaPlugin {
 		
 		ItemStack playerHead = null;
 		
+		if (!Main.RunnerList.contains(p)) {
+			return;
+		}
+		
 		if (Main.versionCompat("1.13")) {
 			
 			playerHead = new ItemStack(Material.getMaterial("PLAYER_HEAD"));
@@ -369,9 +373,6 @@ public class Main extends JavaPlugin {
 		}
 		
 
-		if (!Main.RunnerList.contains(p)) {
-			return;
-		}
 		
 		Main.removeCompassItem(p);
 		Main.runnerMenu.addItem(playerHead);
