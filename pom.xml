@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>MinecraftManhuntMultipleSpeedrunners</groupId>
   <artifactId>ManhuntMultSpeedrunners</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <name>Minecraft Manhunt with Multiple Speedrunners</name>
   <description>Ever wanted to have more than 1 speedrunner for MC Manhunt? Well, now you can with this plugin!</description>
   <repositories>

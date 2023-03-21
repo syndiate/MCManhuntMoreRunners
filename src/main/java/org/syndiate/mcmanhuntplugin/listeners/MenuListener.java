@@ -1,4 +1,4 @@
-package org.syndiate.manhuntMultSpeedrunners.listeners;
+package org.syndiate.mcmanhuntplugin.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.syndiate.manhuntMultSpeedrunners.Main;
+import org.syndiate.mcmanhuntplugin.Main;
 
 public class MenuListener implements Listener {
 	

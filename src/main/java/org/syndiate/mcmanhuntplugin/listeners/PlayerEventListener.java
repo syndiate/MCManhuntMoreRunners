@@ -1,4 +1,4 @@
-package org.syndiate.manhuntMultSpeedrunners.listeners;
+package org.syndiate.mcmanhuntplugin.listeners;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.syndiate.manhuntMultSpeedrunners.Main;
+import org.syndiate.mcmanhuntplugin.Main;
 
 public class PlayerEventListener implements Listener {
 	

@@ -1,4 +1,4 @@
-package org.syndiate.manhuntMultSpeedrunners;
+package org.syndiate.mcmanhuntplugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,9 +20,9 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.syndiate.manhuntMultSpeedrunners.commands.*;
-import org.syndiate.manhuntMultSpeedrunners.listeners.*;
-import org.syndiate.manhuntMultSpeedrunners.tabCompleters.*;
+import org.syndiate.mcmanhuntplugin.commands.*;
+import org.syndiate.mcmanhuntplugin.listeners.*;
+import org.syndiate.mcmanhuntplugin.tabCompleters.*;
 
 
 

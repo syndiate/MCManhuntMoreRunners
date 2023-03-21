@@ -1,4 +1,4 @@
-package org.syndiate.manhuntMultSpeedrunners.tabCompleters;
+package org.syndiate.mcmanhuntplugin.tabCompleters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.syndiate.manhuntMultSpeedrunners.Main;
+import org.syndiate.mcmanhuntplugin.Main;
 
 public class TrackCommandCompleter implements TabCompleter {
 	

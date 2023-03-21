@@ -1,11 +1,11 @@
-package org.syndiate.manhuntMultSpeedrunners.listeners;
+package org.syndiate.mcmanhuntplugin.listeners;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.syndiate.manhuntMultSpeedrunners.Main;
+import org.syndiate.mcmanhuntplugin.Main;
 
 public class DamageListener implements Listener {
 

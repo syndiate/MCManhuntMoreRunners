@@ -1,4 +1,4 @@
-package org.syndiate.manhuntMultSpeedrunners.tabCompleters;
+package org.syndiate.mcmanhuntplugin.tabCompleters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
