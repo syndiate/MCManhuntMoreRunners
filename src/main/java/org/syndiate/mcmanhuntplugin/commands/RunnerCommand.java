@@ -97,7 +97,7 @@ public class RunnerCommand implements CommandExecutor {
 		Player givenRunner = server.getPlayer(args[1]);
 		
 		if (givenRunner == null) {
-			sender.sendMessage(Main.ERROR_COLOR + "Could not find the player specified.");
+			sender.sendMessage(Main.PLAYER_DOES_NOT_EXIST);
 			return true;
 		}
 		

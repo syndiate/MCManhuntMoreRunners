@@ -12,7 +12,7 @@ public class ManhuntCommandCompleter implements TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if (args.length == 1) return new ArrayList<>(Arrays.asList("start","stop","status","help"));
+		if (args.length == 1) return new ArrayList<>(Arrays.asList("start","stop","compass","status","help"));
 		return null;
 	}
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.Sound;
@@ -56,12 +55,7 @@ public class PlayerEventListener implements Listener {
 			}
 			
 			
-			Main.RunnerList.remove(deadPlayer);
-			Main.DeadRunnerList.add(deadPlayer);
-			Main.removeCompassItem(deadPlayer);
-			deadPlayer.setGameMode(GameMode.SPECTATOR);
-			
-			
+			Main.killRunner(deadPlayer);
 			
 			if (Main.RunnerList.size() > 0) {
 				return;
@@ -88,12 +82,8 @@ public class PlayerEventListener implements Listener {
 			defeatMsg(Main.HunterList);
 				
 			for (Player deadRunner : Main.DeadRunnerList) {
-					
-				Main.DeadRunnerList.remove(deadRunner);
-				Main.RunnerList.add(deadRunner);
+				Main.addRunner(deadRunner);
 				deadRunner.teleport(new Location(Bukkit.getWorld("world"), 0, 0, 0));
-				deadRunner.setGameMode(GameMode.SURVIVAL);
-					
 			}
 			
 			victoryMsg(Main.RunnerList);
@@ -119,6 +109,9 @@ public class PlayerEventListener implements Listener {
 		}
 		
 		Player respawnedPlayer = e.getPlayer();
+		if (!Main.HunterList.contains(respawnedPlayer)) {
+			return;
+		}
 		Main.giveCompass(respawnedPlayer);
 		
 	}
@@ -150,9 +143,8 @@ public class PlayerEventListener implements Listener {
 		}
 		
 		if (Main.DeadRunnerList.contains(p)) {
+			Main.removeRunner(p);
 			Main.DisconnectedPlayers.put(pId,  "spectator");
-			Main.RunnerList.remove(p);
-			Main.DeadRunnerList.remove(p);
 			return;
 		}
 //        TrackCommand.putOfflinePlayerLocation(p.getName(), p.getLocation());
@@ -178,14 +170,12 @@ public class PlayerEventListener implements Listener {
 		
 			case "hunter":
 				Main.addHunter(p);
-				Main.giveCompass(p);
 				break;
 			case "runner":
 				Main.addRunner(p);
 				break;
 			case "spectator":
-				Main.DeadRunnerList.add(p);
-//				TODO: make player go in spectator mode
+				Main.killRunner(p);
 				break;
 				
 		}

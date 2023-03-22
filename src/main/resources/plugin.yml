@@ -1,7 +1,7 @@
 name: MinecraftManhuntMoreRunners
 version: 1.0
 api-version: 1.16
-main: org.syndiate.manhuntMultSpeedrunners.Main
+main: org.syndiate.mcmanhuntplugin.Main
 author: syndiate
 description: A recreation of Dream's Minecraft Manhunt, except it allows for multiple speedrunners AND supports all versions, unlike most other plugins.
 
@@ -14,7 +14,7 @@ commands:
     usage: /hunter [add|remove|help]
   manhunt: 
     description: Initiates/stops the manhunt.
-    usage: /manhunt [start|stop|status|help]
+    usage: /manhunt [start|stop|compass|status|help]
   track: 
     description: Tracks a speedrunner.
     usage: /track <runnerUsername>

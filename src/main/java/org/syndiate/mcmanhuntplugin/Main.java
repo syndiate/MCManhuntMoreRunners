@@ -8,9 +8,11 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -20,9 +22,17 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.syndiate.mcmanhuntplugin.commands.*;
-import org.syndiate.mcmanhuntplugin.listeners.*;
-import org.syndiate.mcmanhuntplugin.tabCompleters.*;
+import org.syndiate.mcmanhuntplugin.commands.HunterCommand;
+import org.syndiate.mcmanhuntplugin.commands.ManhuntCommand;
+import org.syndiate.mcmanhuntplugin.commands.RunnerCommand;
+import org.syndiate.mcmanhuntplugin.commands.TrackCommand;
+import org.syndiate.mcmanhuntplugin.listeners.CompassListener;
+import org.syndiate.mcmanhuntplugin.listeners.MenuListener;
+import org.syndiate.mcmanhuntplugin.listeners.PlayerEventListener;
+import org.syndiate.mcmanhuntplugin.listeners.PortalListener;
+import org.syndiate.mcmanhuntplugin.tabCompleters.ManhuntCommandCompleter;
+import org.syndiate.mcmanhuntplugin.tabCompleters.PlayerCommandCompleter;
+import org.syndiate.mcmanhuntplugin.tabCompleters.TrackCommandCompleter;
 
 
 
@@ -44,6 +54,9 @@ public class Main extends JavaPlugin {
 	public static final String HUNTER_COMMAND = "hunter";
 	public static final String MANHUNT_COMMAND = "manhunt";
 	public static final String TRACK_COMMAND = "track";
+	
+	
+	public static final String PLAYER_DOES_NOT_EXIST = Main.ERROR_COLOR + "Could not find the player specified.";
 	
 	
 	
@@ -129,6 +142,7 @@ public class Main extends JavaPlugin {
 		Main.HunterList.remove(givenHunter);
 		Main.HunterList.add(givenHunter);
 		Main.setMaxHealth(givenHunter);
+		Main.giveCompass(givenHunter);
 		
 	}
 
@@ -142,17 +156,6 @@ public class Main extends JavaPlugin {
 	
 	
 	
-	public static void addRunner(Player givenRunner) {
-		
-		if (Main.RunnerList.contains(givenRunner)) {
-			return;
-		}
-		
-		Main.RunnerList.add(givenRunner);
-		Main.addCompassItem(givenRunner);
-		Main.setMaxHealth(givenRunner);
-		
-	}
 	
 	
 	
@@ -185,13 +188,25 @@ public class Main extends JavaPlugin {
 	
 	
 	
+	public static void addRunner(Player givenRunner) {
+		
+		if (Main.RunnerList.contains(givenRunner)) {
+			return;
+		}
+		
+		Main.DeadRunnerList.remove(givenRunner);
+		Main.RunnerList.add(givenRunner);
+		Main.addCompassItem(givenRunner);
+		Main.setMaxHealth(givenRunner);
+		givenRunner.setGameMode(GameMode.SURVIVAL);
+		
+	}
 	
 	public static void removeRunner(Player givenRunner) {
 		Main.RunnerList.remove(givenRunner);
 		Main.DeadRunnerList.remove(givenRunner);
-		Main.removeCompassItem(givenRunner);
 		Main.DisconnectedPlayers.remove(givenRunner.getUniqueId());
-//		Main.removeCompassItem(givenRunner);
+		Main.removeCompassItem(givenRunner);
 		
 		for (Map.Entry<Player, Player> entry : Main.HunterTracking.entrySet()) {
 			
@@ -204,6 +219,12 @@ public class Main extends JavaPlugin {
 		
 	}
 	
+	public static void killRunner(Player givenRunner) {
+		Main.removeRunner(givenRunner);
+		Main.DeadRunnerList.add(givenRunner);
+		givenRunner.setGameMode(GameMode.SPECTATOR);
+	}
+	
 	
 	
 	
@@ -211,12 +232,15 @@ public class Main extends JavaPlugin {
 	
 	public static void giveCompass(Player p) {
 		
-		if (Main.manhuntEnded || !Main.HunterList.contains(p) || p.getInventory().contains(Material.COMPASS)) {
+		if (Main.manhuntEnded || !Main.HunterList.contains(p)/* || p.getInventory().contains(Material.COMPASS)*/) {
 			return;
 		}
 		
-		ItemStack HunterCompass = new ItemStack(Material.COMPASS, 1);
-		p.getInventory().addItem(HunterCompass);
+		ItemStack hunterCompass = new ItemStack(Material.COMPASS, 1);
+		hunterCompass.addEnchantment(Enchantment.VANISHING_CURSE, 1);
+		
+		p.getInventory().removeItem(hunterCompass);
+		p.getInventory().addItem(hunterCompass);
 		
 	}
 
@@ -236,7 +260,7 @@ public class Main extends JavaPlugin {
 			return;
 		}
 		if (runner == null) {
-			hunter.sendMessage(Main.ERROR_COLOR + "Player does not exist.");
+			hunter.sendMessage(Main.PLAYER_DOES_NOT_EXIST);
 			return;
 		}
 		
@@ -279,36 +303,36 @@ public class Main extends JavaPlugin {
 		
 		
 		// TODO: EXTREMELY DIRTY SOLUTION, CLEAN UP LATER
-		if (hunterEnv.equals(runnerEnv)) {
+		if (hunterEnv == runnerEnv) {
 			runnerLoc = runner.getLocation();
 		} else {
 		
-		if (hunterEnv.equals(Environment.NORMAL)) {
-			
-			if (runnerEnv.equals(Environment.NETHER)) {
-				runnerLoc = Main.PortalEntrances.get(runner);
+			if (hunterEnv == Environment.NORMAL) {
+
+				if (runnerEnv == Environment.NETHER) {
+					runnerLoc = Main.PortalEntrances.get(runner);
+				}
+				if (runnerEnv == Environment.THE_END) {
+					runnerLoc = Main.PortalEntrances.get(runner);
+				}
+
+			} else if (hunterEnv == Environment.NETHER) {
+
+				if (runnerEnv == Environment.NORMAL) {
+					runnerLoc = Main.PortalExits.get(hunter);
+				}
+				if (runnerEnv == Environment.THE_END) {
+					runnerLoc = Main.PortalExits.get(hunter);
+				}
+			} else if (hunterEnv == Environment.THE_END) {
+
+				if (runnerEnv == Environment.NORMAL) {
+					runnerLoc = Main.PortalExits.get(hunter);
+				}
+				if (runnerEnv == Environment.NETHER) {
+					runnerLoc = Main.PortalExits.get(hunter);
+				}
 			}
-			if (runnerEnv.equals(Environment.THE_END)) {
-				runnerLoc = Main.PortalEntrances.get(runner);
-			}
-			
-		} else if (hunterEnv.equals(Environment.NETHER)) {
-			
-			if (runnerEnv.equals(Environment.NORMAL)) {
-				runnerLoc = Main.PortalExits.get(hunter);
-			}
-			if (runnerEnv.equals(Environment.THE_END)) {
-				runnerLoc = Main.PortalExits.get(hunter);
-			}
-		} else if (hunterEnv.equals(Environment.THE_END)) {
-			
-			if (runnerEnv.equals(Environment.NORMAL)) {
-				runnerLoc = Main.PortalExits.get(hunter);
-			}
-			if (runnerEnv.equals(Environment.NETHER)) {
-				runnerLoc = Main.PortalExits.get(hunter);
-			}
-		}
 		
 		}
 		

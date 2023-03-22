@@ -1,7 +1,7 @@
 package org.syndiate.mcmanhuntplugin.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,21 +19,49 @@ public class PortalListener implements Listener {
 			return; 
 		}
 		Player p = (Player) event.getEntity();
+		/*
 		if (!Main.RunnerList.contains(p)) {
 			return;
-		}
+		}*/
 		
 		
 		Location from = event.getFrom();
-        World.Environment fromEnv = from.getWorld().getEnvironment();
+		Location to = event.getTo();
+		
+        Environment fromEnv = from.getWorld().getEnvironment();
+        Environment toEnv = to.getWorld().getEnvironment();
         
-        
-        if (fromEnv.equals(World.Environment.NORMAL)) {
-        	Main.clearPortalExit(p);
-        	Main.putPortalEntrance(p, from);
-        } else {
-        	Main.clearPortalEntrance(p);
-        	Main.putPortalExit(p, from);
+        // TODO: EXTREMELY DIRTY SOLUTION, CLEAN UP LATER
+        if (fromEnv == Environment.NORMAL) {
+        	
+        	if (toEnv == Environment.NETHER) {
+        		Main.putPortalEntrance(p, from);
+        		Main.putPortalExit(p, to);
+        	} else if (toEnv == Environment.THE_END) {
+        		Main.clearPortalExit(p);
+        		Main.putPortalEntrance(p, from);
+        	}
+
+        } else if (fromEnv == Environment.NETHER) {
+        	
+        	if (toEnv == Environment.NORMAL) {
+        		Main.clearPortalExit(p);
+        		Main.putPortalEntrance(p, from);
+        	} else if (toEnv == Environment.THE_END) {
+        		Main.clearPortalExit(p);
+        		Main.putPortalEntrance(p, from);
+        	}
+        	
+        } else if (fromEnv == Environment.THE_END) {
+        	
+        	if (toEnv == Environment.NORMAL) {
+        		Main.clearPortalExit(p);
+        		Main.putPortalEntrance(p, from);
+        	} else if (toEnv == Environment.NETHER) {
+        		Main.clearPortalExit(p);
+        		Main.putPortalEntrance(p, from);
+        	}
+        	
         }
         /*
         if (fromEnv == World.Environment.NORMAL) {

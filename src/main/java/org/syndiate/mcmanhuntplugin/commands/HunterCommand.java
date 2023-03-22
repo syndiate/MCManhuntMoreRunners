@@ -96,7 +96,7 @@ public class HunterCommand implements CommandExecutor {
 		Player givenHunter = server.getPlayer(args[1]);
 		
 		if (givenHunter == null) {
-			sender.sendMessage(Main.ERROR_COLOR + "Could not find the player specified.");
+			sender.sendMessage(Main.PLAYER_DOES_NOT_EXIST);
 			return true;
 		}
 		
