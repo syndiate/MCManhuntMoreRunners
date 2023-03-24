@@ -300,43 +300,14 @@ public class Main extends JavaPlugin {
 		Environment hunterEnv = hunter.getWorld().getEnvironment();
 		Environment runnerEnv = runner.getWorld().getEnvironment();
 		Location runnerLoc = runner.getLocation();
-		
-		
-		// TODO: EXTREMELY DIRTY SOLUTION, CLEAN UP LATER
-		if (hunterEnv == runnerEnv) {
-			runnerLoc = runner.getLocation();
-		} else {
-		
+
+		if (hunterEnv != runnerEnv) {
 			if (hunterEnv == Environment.NORMAL) {
-
-				if (runnerEnv == Environment.NETHER) {
-					runnerLoc = Main.PortalEntrances.get(runner);
-				}
-				if (runnerEnv == Environment.THE_END) {
-					runnerLoc = Main.PortalEntrances.get(runner);
-				}
-
-			} else if (hunterEnv == Environment.NETHER) {
-
-				if (runnerEnv == Environment.NORMAL) {
-					runnerLoc = Main.PortalExits.get(hunter);
-				}
-				if (runnerEnv == Environment.THE_END) {
-					runnerLoc = Main.PortalExits.get(hunter);
-				}
-			} else if (hunterEnv == Environment.THE_END) {
-
-				if (runnerEnv == Environment.NORMAL) {
-					runnerLoc = Main.PortalExits.get(hunter);
-				}
-				if (runnerEnv == Environment.NETHER) {
-					runnerLoc = Main.PortalExits.get(hunter);
-				}
+				runnerLoc = Main.PortalEntrances.get(runner);
+			} else {
+				runnerLoc = Main.PortalExits.get(hunter);
 			}
-		
 		}
-		
-//		Location runnerLoc = hunterEnv.equals(runnerEnv) ? runner.getLocation() : Main.RunnerPortals.get(runner);
 		
 		
 		if (Main.versionCompat("1.16")) {
@@ -499,6 +470,9 @@ public class Main extends JavaPlugin {
 	
 
 	
+	
+	
+
 	
 	
 
