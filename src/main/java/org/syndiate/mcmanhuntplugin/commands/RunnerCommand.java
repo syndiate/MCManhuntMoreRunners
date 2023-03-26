@@ -57,7 +57,7 @@ public class RunnerCommand implements CommandExecutor {
 			}
 			case "remove": {
 				Main.RunnerList.clear();
-				Main.runnerMenu.clear();
+				Main.clearCompassMenu();
 				sender.getServer().broadcastMessage(Main.REMOVED_COLOR + "The list of runners has been cleared.");
 				return true;
 			}

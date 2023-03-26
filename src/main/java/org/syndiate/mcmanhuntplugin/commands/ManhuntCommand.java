@@ -34,7 +34,7 @@ public class ManhuntCommand implements CommandExecutor {
 
 				Main.HunterTracking.clear();
 				Main.DeadRunnerList.clear();
-				Main.RunnerPortals.clear();
+				//Main.RunnerPortals.clear();
 
 				Main.manhuntEnded = false;
 				for (Player hunter : Main.HunterList) {
@@ -61,7 +61,7 @@ public class ManhuntCommand implements CommandExecutor {
 
 				Main.RunnerList.clear();
 				Main.HunterList.clear();
-				Main.runnerMenu.clear();
+				Main.clearCompassMenu();
 
 				server.broadcastMessage(Main.VICTORY_COLOR + "The manhunt has ended!");
 				return true;
@@ -96,7 +96,7 @@ public class ManhuntCommand implements CommandExecutor {
 				sender.sendMessage("Runners:" + Main.RunnerList.toString());
 				sender.sendMessage("Hunters:" + Main.HunterList.toString());
 				sender.sendMessage("Dead runners:" + Main.DeadRunnerList.toString());
-				sender.sendMessage("RunnerPortals" + Main.RunnerPortals.toString());
+//				sender.sendMessage("RunnerPortals" + Main.RunnerPortals.toString());
 				sender.sendMessage("HunterTracking" + Main.HunterTracking.toString());
 				sender.sendMessage("Disconnected Players" + Main.DisconnectedPlayers.toString());
 				sender.sendMessage("Portal Entrances" + Main.PortalEntrances.toString());

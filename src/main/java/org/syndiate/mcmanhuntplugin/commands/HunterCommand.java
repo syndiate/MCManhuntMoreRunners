@@ -14,7 +14,6 @@ public class HunterCommand implements CommandExecutor {
 	
 	private boolean singleArg(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		
 		switch(args[0].toLowerCase()) {
 		
 			case "help": {
@@ -58,7 +57,7 @@ public class HunterCommand implements CommandExecutor {
 			}
 			case "remove": {
 				Main.RunnerList.clear();
-				Main.runnerMenu.clear();
+				Main.clearCompassMenu();
 				sender.getServer().broadcastMessage(Main.REMOVED_COLOR + "The list of hunters has been cleared.");
 				return true;
 			}

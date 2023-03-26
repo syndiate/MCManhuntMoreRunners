@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>MinecraftManhuntMultipleSpeedrunners</groupId>
-  <artifactId>ManhuntMultSpeedrunners</artifactId>
+  <groupId>MCManhuntMultipleSpeedrunners</groupId>
+  <artifactId>MCManhuntMultipleSpeedrunners</artifactId>
   <version>1.1.0</version>
   <name>Minecraft Manhunt with Multiple Speedrunners</name>
-  <description>Ever wanted to have more than 1 speedrunner for MC Manhunt? Well, now you can with this plugin!</description>
+  <description>Ever wanted to have more than 1 speedrunner for MC Manhunt? In this plugin, you can have as many hunters and runners as you wish! This plugin also supports 1.8 and above.</description>
   <repositories>
     <repository>
         <id>spigot-repo</id>
@@ -28,7 +28,7 @@
               <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                 <manifestEntries>
-                  <Main-Class>org.syndiate.manhuntMultSpeedrunners.Main</Main-Class>
+                  <Main-Class>org.syndiate.mcmanhuntplugin.Main</Main-Class>
                 </manifestEntries>
               </transformer>
             </transformers>

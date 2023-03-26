@@ -12,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.syndiate.mcmanhuntplugin.commands.HunterCommand;
 import org.syndiate.mcmanhuntplugin.commands.ManhuntCommand;
 import org.syndiate.mcmanhuntplugin.commands.RunnerCommand;
@@ -69,16 +71,19 @@ public class Main extends JavaPlugin {
 	
 	public static Map<Player, Location> PortalEntrances = new HashMap<Player, Location>();
 	public static Map<Player, Location> PortalExits = new HashMap<Player, Location>();
-	
-	public static Map<Player, Location> RunnerPortals = new HashMap<Player, Location>();
+
 	public static Map<Player, Player> HunterTracking = new HashMap<Player, Player>();
 	public static Map<UUID, String> DisconnectedPlayers = new HashMap<UUID, String>();
 	
 	
-	public static final Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
+	private static final Inventory runnerMenu = Bukkit.createInventory(null, InventoryType.CHEST, Main.TITLE_COLOR + "Speedrunners");
 	
 	public static final boolean supportsModernHeads = Main.versionCompat("1.13");
 	public static boolean manhuntEnded = true;
+	
+	
+	private static FileConfiguration config;
+	private static final int SAVE_INTERVAL = 200;
 	
 	
 	
@@ -89,6 +94,10 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		
+		saveDefaultConfig();
+		config = getConfig();
+		loadManhuntData();
 		
 		PluginManager manager = getServer().getPluginManager();
 		
@@ -110,13 +119,52 @@ public class Main extends JavaPlugin {
 		manager.registerEvents(new PortalListener(), this);
 		
 		getLogger().info("The Manhunt with Multiple Speedrunners plugin has been initialized! Type /" + Main.MANHUNT_COMMAND + " help for more info.");
+		
+		
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				saveManhuntData();
+			}
+		}.runTaskTimer(this, SAVE_INTERVAL, SAVE_INTERVAL);
 
 	}
 	
 
 	@Override
 	public void onDisable() {
+		saveManhuntData();
 		getLogger().info("I'm melting!");
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	private void loadManhuntData() {
+		Main.RunnerList = (ArrayList<Player>) config.get("RunnerList");
+		Main.DeadRunnerList = (ArrayList<Player>) config.get("DeadRunnerList");
+		Main.HunterList = (ArrayList<Player>) config.get("HunterList");
+		Main.PortalEntrances = (Map<Player, Location>) config.get("PortalEntrances");
+		Main.PortalExits = (Map<Player, Location>) config.get("PortalExits");
+		Main.HunterTracking = (Map<Player, Player>) config.get("HunterTracking");
+		Main.DisconnectedPlayers = (Map<UUID, String>) config.get("DisconnectedPlayers");
+		Main.manhuntEnded = config.getBoolean("manhuntEnded");
+		
+		for (Player runner : Main.RunnerList) {
+			Main.addCompassItem(runner);
+		}
+	}
+	
+	
+	private void saveManhuntData() {
+		config.set("RunnerList", RunnerList);
+		config.set("DeadRunnerList", DeadRunnerList);
+		config.set("HunterList", HunterList);
+		config.set("PortalEntrances", PortalEntrances);
+		config.set("PortalExits", PortalExits);
+		config.set("HunterTracking", HunterTracking);
+		config.set("DisconnectedPlayers", DisconnectedPlayers);
+		config.set("manhuntEnded", manhuntEnded);
 	}
 	
 	
@@ -149,6 +197,43 @@ public class Main extends JavaPlugin {
 	public static void removeHunter(Player givenHunter) {
 		Main.HunterList.remove(givenHunter);
 		Main.DisconnectedPlayers.remove(givenHunter.getUniqueId());
+	}
+	
+	public static void addRunner(Player givenRunner) {
+		
+		if (Main.RunnerList.contains(givenRunner)) {
+			return;
+		}
+		
+		Main.DeadRunnerList.remove(givenRunner);
+		Main.RunnerList.add(givenRunner);
+		Main.addCompassItem(givenRunner);
+		Main.setMaxHealth(givenRunner);
+		givenRunner.setGameMode(GameMode.SURVIVAL);
+		
+	}
+	
+	public static void removeRunner(Player givenRunner) {
+		Main.RunnerList.remove(givenRunner);
+		Main.DeadRunnerList.remove(givenRunner);
+		Main.DisconnectedPlayers.remove(givenRunner.getUniqueId());
+		Main.removeCompassItem(givenRunner);
+		
+		for (Map.Entry<Player, Player> entry : Main.HunterTracking.entrySet()) {
+			
+			if (!entry.getValue().getUniqueId().equals(givenRunner.getUniqueId())) {
+				continue;
+			}
+			Main.HunterTracking.remove(entry.getKey());
+			
+		}
+		
+	}
+	
+	public static void killRunner(Player givenRunner) {
+		Main.removeRunner(givenRunner);
+		Main.DeadRunnerList.add(givenRunner);
+		givenRunner.setGameMode(GameMode.SPECTATOR);
 	}
 	
 	
@@ -188,42 +273,6 @@ public class Main extends JavaPlugin {
 	
 	
 	
-	public static void addRunner(Player givenRunner) {
-		
-		if (Main.RunnerList.contains(givenRunner)) {
-			return;
-		}
-		
-		Main.DeadRunnerList.remove(givenRunner);
-		Main.RunnerList.add(givenRunner);
-		Main.addCompassItem(givenRunner);
-		Main.setMaxHealth(givenRunner);
-		givenRunner.setGameMode(GameMode.SURVIVAL);
-		
-	}
-	
-	public static void removeRunner(Player givenRunner) {
-		Main.RunnerList.remove(givenRunner);
-		Main.DeadRunnerList.remove(givenRunner);
-		Main.DisconnectedPlayers.remove(givenRunner.getUniqueId());
-		Main.removeCompassItem(givenRunner);
-		
-		for (Map.Entry<Player, Player> entry : Main.HunterTracking.entrySet()) {
-			
-			if (!entry.getValue().getUniqueId().equals(givenRunner.getUniqueId())) {
-				continue;
-			}
-			Main.HunterTracking.remove(entry.getKey());
-			
-		}
-		
-	}
-	
-	public static void killRunner(Player givenRunner) {
-		Main.removeRunner(givenRunner);
-		Main.DeadRunnerList.add(givenRunner);
-		givenRunner.setGameMode(GameMode.SPECTATOR);
-	}
 	
 	
 	
@@ -440,6 +489,13 @@ public class Main extends JavaPlugin {
 		
 	}
 	
+	public static void clearCompassMenu() {
+		Main.runnerMenu.clear();
+	}
+	
+	public static void openCompassMenu(Player hunter) {
+		hunter.openInventory(Main.runnerMenu);
+	}
 	
 	
 	
@@ -465,14 +521,8 @@ public class Main extends JavaPlugin {
 	    // The version numbers are equal
 	    return true;
 	}
-
-
-	
-
 	
 	
-	
-
 	
 	
 
